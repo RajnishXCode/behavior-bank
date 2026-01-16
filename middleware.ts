@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { verifyToken } from "@/lib/auth";
+import { verifyTokenEdge } from "@/lib/jwt";
 import { SESSION } from "@/lib/constants";
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Get token from cookie or Authorization header
@@ -18,7 +18,7 @@ export function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/", request.url));
     }
 
-    const payload = verifyToken(token);
+    const payload = await verifyTokenEdge(token);
 
     if (!payload) {
       // Invalid token, redirect to login

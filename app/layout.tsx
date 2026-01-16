@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ConfigProvider } from "antd";
+import StyledComponentsRegistry from "@/lib/AntdRegistry";
+import { ThemeConfig } from "antd";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,6 +20,14 @@ export const metadata: Metadata = {
   description: "Behavior Bank - Earn points for every behavior",
 };
 
+const theme: ThemeConfig = {
+  token: {
+    colorPrimary: "#00b96b", // Bank/Money Green
+    borderRadius: 8,
+    fontFamily: "var(--font-geist-sans)",
+  },
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -26,9 +36,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50`}
       >
-        <ConfigProvider>{children}</ConfigProvider>
+        <StyledComponentsRegistry>
+          <ConfigProvider theme={theme}>{children}</ConfigProvider>
+        </StyledComponentsRegistry>
       </body>
     </html>
   );
